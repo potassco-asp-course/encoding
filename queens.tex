@@ -1,74 +1,35 @@
-%------------------------------------------------------------
-\begin{frame}[fragile]{A first encoding}
-%  \begin{block}{Approach}
-    \begin{enumerate}
-    \item Each square may host a queen
-    \item<2-> No \onslide<1-2,5->{\alert<2>{row}}\onslide<1,5->{,} \onslide<1,3,5->{\alert<3>{column}}\onslide<1,5->{, or} \onslide<1,4->{\alert<4>{diagonal}} hosts two queens
-    \item<5-> A placement is given by instances of \lstinline{queen} in a stable model
-    \only<7->{%
-    \item We have to place (at least) $N$ queens}
-    \end{enumerate}
-%  \end{block}
-  \begin{block}{\lstinline{queens0.lp}}
-  \lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={1-6},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}
-  \alt<1-2>{\onslide<2>{\alert<2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={7-8},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}}}{%
-  \alt<3>{\alert<3>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={7-7,9-9},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}}{%
-  \alt<4>{\alert<4>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={7-7,10-10},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}}{%
-          \lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={7-7},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}
-          \lstinputlisting[basicstyle=\ttfamily\footnotesize,aboveskip=0pt,belowskip=0pt,escapechar=?]{encoding/dummy.txt}}}}
-\only<7->{\alert<7>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},aboveskip=0pt,belowskip=-\medskipamount]{encoding/encodings/queens0.lp}}}
-%          \onslide<5->{{\begin{lstlisting}a\end{lstlisting}}%
-%          \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]a\end{lstlisting}
-  \onslide<5->{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={12-14},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}
-  \end{block}
-\begin{picture}(0,0)
-  \put(155,145){\visible<6>{\alert<6->{\rotatebox{-10}{\LARGE\bf\shortstack{Anything missing?}}}}}
-\end{picture}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile,shrink]{A first encoding}
+\lstinputlisting{encoding/encodings/queens0.lp}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A first encoding}{Let's place \alert{$8$} queens!}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A first encoding}{Let's place \alert{$8$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=8}} \lstinline{queens0.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
-\alert<3>{queen(1,6) queen(2,3) queen(3,1) queen(4,7)}
+\alert<3>{queen(1,6) queen(2,3) queen(3,1) queen(4,7) \\ }
 \alert<3>{queen(5,5) queen(6,8) queen(7,2) queen(8,4)}
 SATISFIABLE
 
 Models      : 1+
 \alert<4>{Time        : 0.006s} (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
 CPU Time    : 0.000s
-Choices     : 18
+\alert<4>{Choices     : 18}
 \alert<4>{Conflicts   : 13}
 Restarts    : 0
 
 Variables   : 793
 Constraints : 729
 \end{semiverbatim}
-\end{block}
+\end{block}%
 \begin{picture}(0,0)
-  \put(260,128){\visible<3->{\alert<3>{%
-\chessboard[tinyboard,setpieces={Qa3,Qb7,Qc2,Qd8,Qe5,Qf1,Qg4,Qh6}]}}}
-% \scriptsize
-% \begin{tabular}{|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|@{\;}c@{\;}|l}
-%       \cline{1-8}
-%       &&&&&Q&&&\!\!1\\\cline{1-8}
-%       &&Q&&&&&&\!\!2\\\cline{1-8}
-%       Q&&&&&&&&\!\!3\\\cline{1-8}
-%       &&&&&&Q&&\!\!4\\\cline{1-8}
-%       &&&&Q&&&&\!\!5\\\cline{1-8}
-%       &&&&&&&Q&\!\!6\\\cline{1-8}
-%       &Q&&&&&&&\!\!7\\\cline{1-8}
-%       &&&Q&&&&&\!\!8\\\cline{1-8}
-%       \multicolumn{1}{c}{\!1}&\multicolumn{1}{@{}c}{2}&\multicolumn{1}{@{}c}{3}&\multicolumn{1}{@{}c}{4}&\multicolumn{1}{@{}c}{5}&\multicolumn{1}{@{}c}{6}&\multicolumn{1}{@{}c}{7}&\multicolumn{1}{@{}c@{}}{8}&\multicolumn{1}{l}{}
-%     \end{tabular}
+  \put(250,20){\visible<3>{\chessboard[tinyboard,setpieces={Qa3,Qb7,Qc2,Qd8,Qe5,Qf1,Qg4,Qh6}]}}
 \end{picture}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A first encoding}{Let's place \alert{$22$} queens!}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A first encoding}{Let's place \alert{$22$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=22}} \lstinline{queens0.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -78,7 +39,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2>{Time        : 150.531s} (Solving: 150.37s 1st Model: 150.34s Unsat: 0.00s)
 CPU Time    : 147.480s
-Choices     : 594960
+\alert<2>{Choices     : 594960}
 \alert<2>{Conflicts   : 574565}
 Restarts    : 19
 
@@ -148,7 +109,7 @@ Restarts    : 4
 \end{block}
 \end{frame}
 %------------------------------------------------------------
-\begin{frame}[fragile]{A first refinement}{Where Time Has Gone}
+\begin{frame}[fragile]{A first refinement}{Where time has gone}
 \begin{block}{\onslide<3->{\alert<3>{\lstinline{time(}}}\alert{\lstinline{gringo -c} \alert{\lstinline{n=122}} \lstinline{queens1.lp}} \alt<1>{\alert<1>{\lstinline{| clasp --stats}}}{\onslide<3->{\alert<3>{\lstinline{| wc)}}}}}
 \vspace*{-3mm}
 \footnotesize%
@@ -165,16 +126,9 @@ user    1m15.980s
 sys \   0m0.090s
 \end{semiverbatim}}
 \end{block}
-% \onslide<6>{%
-%   \begin{itemize}
-%   \item \structure{Note} Grounding makes the problem!
-%   \end{itemize}}
-% \begin{picture}(0,0)
-%   \put(85,70){\visible<3>{\alert<3->{\Large\bf\shortstack{Just kidding :-)}}}}
-% \end{picture}
 \end{frame}
 %------------------------------------------------------------
-\begin{frame}[fragile]{A first refinement}{Grounding Time $\sim$ Space}
+\begin{frame}[fragile]{A first refinement}{Grounding time $\sim$ space}
 \begin{block}{\lstinline{queens1.lp}}
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize,escapechar=?]
 % DOMAIN
@@ -198,7 +152,7 @@ sys \   0m0.090s
 \end{frame}
 %------------------------------------------------------------
 \begin{frame}{Enumerating diagonals}
-  \begin{block}{\alert<1-3>{$N=4$}}
+  \begin{block}{\alert<1-3>{$\mathtt{n}=4$}}
   \quad
   \begin{minipage}[t]{0.5\linewidth}
   \alt<1>{\chessboard[normalboard,maxfield=d4,setpieces={},markmoves={a1-a1,a2-b1,a3-c1,a4-d1,b4-d2,c4-d3,d4-d4}]}{%
