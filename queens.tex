@@ -1,6 +1,8 @@
 % ----------------------------------------------------------------------
-\begin{frame}[fragile,shrink]{A first encoding}
-\lstinputlisting{encoding/encodings/queens0.lp}
+\begin{frame}[fragile]{A first encoding}
+  \begin{block}{\lstinline{queens0.lp}}
+    \lstinputlisting[basicstyle=\ttfamily\footnotesize]{encoding/encodings/queens0.lp}
+  \end{block}
 \end{frame}
 % ----------------------------------------------------------------------
 \begin{frame}[fragile]{A first encoding}{Let's place \alert{$8$} queens}
@@ -24,7 +26,7 @@ Constraints : 729
 \end{semiverbatim}
 \end{block}%
 \begin{picture}(0,0)
-  \put(250,20){\visible<3>{\chessboard[tinyboard,setpieces={Qa3,Qb7,Qc2,Qd8,Qe5,Qf1,Qg4,Qh6}]}}
+  \put(250,20){\visible<3>{\chessboard[tinyboard,labelbottomformat=\arabic{filelabel},showmover=false,setpieces={Qa3,Qb7,Qc2,Qd8,Qe5,Qf1,Qg4,Qh6}]}}
 \end{picture}
 \end{frame}
 % ----------------------------------------------------------------------
@@ -48,26 +50,26 @@ Constraints : 16787
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A first refinement}
-  At least $N$ queens?\hfill  \alert<4>{\onslide<2->{Exactly one queen per} \onslide<2,4->{\alert<2>{row}} \onslide<4->{and} \onslide<3->{\alert<3>{column}}\onslide<2->{!}}
-\alt<1-3>{%
-  \begin{block}{\lstinline{queens0.lp}}
-  \lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={1-7},showlines=true,belowskip=0pt]{encoding/encodings/queens0.lp}
-  \alt<1>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={8-8},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}{\alert<2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={8-8},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}}}
-  \alt<1-2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={9-9},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}{\alert<3>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={9-9},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}}}
-  \lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={10-10},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}
-  \onslide<1>{\alert<1>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens0.lp}}}
-  \lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={12-14},aboveskip=0pt]{encoding/encodings/queens0.lp}
-  \end{block}}{%
-  \begin{block}{\lstinline{queens1.lp}}
-  \lstinputlisting[basicstyle=\ttfamily\footnotesize]{encoding/encodings/queens1.lp}
-  \end{block}}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A first refinement}{
+    \alert<4>{\onslide<2->{Exactly one queen per}\only<2->{\alert<2>{ row}}\only<3->{ and\alert<3>{ column}}\onslide<2->{!}}
+    \only<-3>{At least \texttt{n} queens?}}
+  \alt<1-3>{%
+    \begin{block}{\lstinline{queens0.lp}}\lstset{basicstyle=\ttfamily\footnotesize,aboveskip=0pt,belowskip=0pt}%
+                                                                                            \lstinputlisting[linerange={ 1- 7}]{encoding/encodings/queens0.lp}
+      \alt<1  >{\lstinputlisting[linerange={8-8}]{encoding/encodings/queens0.lp}}{\alert<2>{\lstinputlisting[linerange={ 8- 8}]{encoding/encodings/queens1.lp}}}
+      \alt<1-2>{\lstinputlisting[linerange={9-9}]{encoding/encodings/queens0.lp}}{\alert<3>{\lstinputlisting[linerange={ 9- 9}]{encoding/encodings/queens1.lp}}}
+                                                                                            \lstinputlisting[linerange={10-10}]{encoding/encodings/queens0.lp}
+                                                                      \onslide<1>{\alert<1>{\lstinputlisting[linerange={11-11}]{encoding/encodings/queens0.lp}}}
+                                                                                            \lstinputlisting[linerange={12-14}]{encoding/encodings/queens0.lp}
+    \end{block}}{%
+    \begin{block}{\lstinline{queens1.lp}}\lstset{basicstyle=\ttfamily\footnotesize,aboveskip=0pt,belowskip=0pt}%
+      \lstinputlisting{encoding/encodings/queens1.lp}
+    \end{block}}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A first refinement}{Let's place \alert{$22$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=22}} \lstinline{queens1.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -77,7 +79,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2>{Time        : 0.113s} (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
 CPU Time    : 0.020s
-Choices     : 132
+\alert<2>{Choices     : 132}
 \alert<2>{Conflicts   : 105}
 Restarts    : 1
 
@@ -86,10 +88,9 @@ Constraints : 6710
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A first refinement}{Let's place \alert{$122$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=122}} \lstinline{queens1.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -99,7 +100,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2>{Time        : 79.475s} (\alert<2>{Solving: 1.06s} 1st Model: 1.06s Unsat: 0.00s)
 CPU Time    : 6.930s
-Choices     : 1373
+\alert<2>{Choices     : 1373}
 \alert<2>{Conflicts   : 845}
 Restarts    : 4
 
@@ -108,10 +109,9 @@ Restarts    : 4
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A first refinement}{Where time has gone}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{Alternative}{Unix tools}
 \begin{block}{\onslide<3->{\alert<3>{\lstinline{time(}}}\alert{\lstinline{gringo -c} \alert{\lstinline{n=122}} \lstinline{queens1.lp}} \alt<1>{\alert<1>{\lstinline{| clasp --stats}}}{\onslide<3->{\alert<3>{\lstinline{| wc)}}}}}
-\vspace*{-3mm}
 \footnotesize%
 \onslide<4->{%
 \begin{semiverbatim}
@@ -127,9 +127,9 @@ sys \   0m0.090s
 \end{semiverbatim}}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A first refinement}{Grounding time $\sim$ space}
-\begin{block}{\lstinline{queens1.lp}}
+  \begin{block}{\lstinline{queens1.lp}}%
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize,escapechar=?]
 % DOMAIN
 #const n=4. ?\alert<2>{square(\alert<3>{1..n},\alert<4>{1..n}).}\hfill\textnormal{\onslide<2->{O(}}\onslide<3->{\alert<3-4>{n}}\onslide<4->{\alert<4>{$\times$n}}\textnormal{\onslide<2->{)}}?
@@ -140,73 +140,64 @@ sys \   0m0.090s
 % TEST
 :- ?\alert<6>{X := 1..n}?, not 1 #count{ queen(X,?\alert<6>{Y}?) } 1.?\hfill\onslide<6->{\textnormal{O(}\alert<6>{n$\times$n}\textnormal{)}}?
 :- ?\alert<6>{Y := 1..n}?, not 1 #count{ queen(?\alert<6>{X}?,Y) } 1.?\hfill\onslide<6->{\textnormal{O(}\alert<6>{n$\times$n}\textnormal{)}}?
-?\alert<7,11>{:- queen(\alert<8,10>{X1},\alert<8,10>{Y1}), queen(\alert<9-10>{X2},\alert<9>{Y2}), X1 < X2, \alert<10>{X2-X1 == |Y2-Y1|}.}\hfill\textnormal{\onslide<7->{O(}}\onslide<8->{\alert<8-11>{n$^2$}}\onslide<9->{\alert<9-11>{$\times$n\onslide<9>{$^2$}}}\textnormal{\onslide<7->{)}}?
+?\alert<7,11>{:- queen(\alert<8,10>{X},\alert<8,10>{Y}), queen(\alert<9-10>{X'},\alert<9>{Y'}), X < X', \alert<10>{X'-X = |Y'-Y|}.}\hfill\textnormal{\onslide<7->{O(}}\onslide<8->{\alert<8-11>{n$^2$}}\onslide<9->{\alert<9-11>{$\times$n\onslide<9>{$^2$}}}\textnormal{\onslide<7->{)}}?
 
 % DISPLAY
 #show queen/2.
 \end{lstlisting}
-\end{block}
-\begin{picture}(0,0)
-  \put(112,28){\visible<11>{\alert<11>{\LARGE\bf\shortstack{Diagonals make trouble!}}}}
-\end{picture}
-\end{frame}
-%------------------------------------------------------------
-\begin{frame}{Enumerating diagonals}
-  \begin{block}{\alert<1-3>{$\mathtt{n}=4$}}
-  \quad
-  \begin{minipage}[t]{0.5\linewidth}
-  \alt<1>{\chessboard[normalboard,maxfield=d4,setpieces={},markmoves={a1-a1,a2-b1,a3-c1,a4-d1,b4-d2,c4-d3,d4-d4}]}{%
-  \chessboard[normalboard,maxfield=d4,pgfstyle={[base,at={\pgfpoint{0pt}{-0.4ex}}]text},%
-              text=\fontsize{1.2ex}{1.2ex}\bfseries1,markregions={a1-a1},%
-              text=\fontsize{1.2ex}{1.2ex}\bfseries2,markregions={a2-a2,b1-b1},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries3,markregions={a3-a3,b2-b2,c1-c1},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries4,markregions={a4-a4,b3-b3,c2-c2,d1-d1},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries5,markregions={b4-b4,c3-c3,d2-d2},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries6,markregions={c4-c4,d3-d3},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries7,markregions={d4-d4}]}
-
-  \bigskip
-  \onslide<3->{\#diagonal$_1={}$
-
-               $($\#row${}+{}$\#column$)-1$}
-  \end{minipage}
-  \begin{minipage}[t]{0.35\linewidth}
-   \alt<1>{\chessboard[normalboard,maxfield=d4,setpieces={},markmoves={a4-a4,a3-b4,a2-c4,a1-d4,b1-d3,c1-d2,d1-d1}]}{%
-  \chessboard[normalboard,maxfield=d4,pgfstyle={[base,at={\pgfpoint{0pt}{-0.4ex}}]text},%
-              text=\fontsize{1.2ex}{1.2ex}\bfseries7,markregions={a4-a4},%
-              text=\fontsize{1.2ex}{1.2ex}\bfseries6,markregions={a3-a3,b4-b4},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries5,markregions={a2-a2,b3-b3,c4-c4},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries4,markregions={a1-a1,b2-b2,c3-c3,d4-d4},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries3,markregions={b1-b1,c2-c2,d3-d3},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries2,markregions={c1-c1,d2-d2},
-              text=\fontsize{1.2ex}{1.2ex}\bfseries1,markregions={d1-d1}]}
-
-  \bigskip
-  \onslide<3->{\#diagonal$_2={}$
-
-               $($\#row${}-{}$\#column$)+N$}
-  \end{minipage}
   \end{block}
-\onslide<4->{%
-  \begin{itemize}
-  \item\structure{Note} For each~$N$, indexes $1,\dots,(2{*}N){-}1$ refer to squares on \#diagonal$_{1/2}$
-  \end{itemize}}
+  \begin{picture}(0,0)
+    \put(150,28){\visible<11>{\alert<11>{\LARGE\bf\shortstack{Diagonals make trouble!}}}}
+  \end{picture}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A second refinement}{Let's go for Diagonals!}
-\begin{block}{\alt<4>{\lstinline{queens2.lp}}{\lstinline{queens1.lp}}}
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={1-9},showlines=true,belowskip=0pt]{encoding/encodings/queens1.lp}
-\alt<1>{\alert<1>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={10-10},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}}}{%
-\alert<2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={10-10},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens2.lp}}}
-\alt<1-2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}}{%
-\alert<3>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens2.lp}}}
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={12-14},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}
+% ----------------------------------------------------------------------
+\begin{frame}{Enumerating diagonals}{\alert<1-3>{$\mathtt{n}=4$}}
+  \centering
+    \begin{minipage}[t]{0.4\linewidth}
+      \alt<1>{\chessboard[normalboard,labelbottomformat=\arabic{filelabel},showmover=false,maxfield=d4,setpieces={},markmoves={a1-a1,a2-b1,a3-c1,a4-d1,b4-d2,c4-d3,d4-d4}]}{%
+        \chessboard[normalboard,labelbottomformat=\arabic{filelabel},showmover=false,maxfield=d4,pgfstyle={[base,at={\pgfpoint{0pt}{-0.4ex}}]text},%
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries1,markregions={a1-a1},%
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries2,markregions={a2-a2,b1-b1},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries3,markregions={a3-a3,b2-b2,c1-c1},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries4,markregions={a4-a4,b3-b3,c2-c2,d1-d1},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries5,markregions={b4-b4,c3-c3,d2-d2},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries6,markregions={c4-c4,d3-d3},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries7,markregions={d4-d4}]}
+      \par\medskip
+      \onslide<3->{\#diagonal$_1={}$\par\quad $($\#row${}+{}$\#column$)-1$}
+    \end{minipage}
+    \qquad
+    \begin{minipage}[t]{0.4\linewidth}
+      \alt<1>{\chessboard[normalboard,labelbottomformat=\arabic{filelabel},showmover=false,maxfield=d4,setpieces={},markmoves={a4-a4,a3-b4,a2-c4,a1-d4,b1-d3,c1-d2,d1-d1}]}{%
+        \chessboard[normalboard,labelbottomformat=\arabic{filelabel},showmover=false,maxfield=d4,pgfstyle={[base,at={\pgfpoint{0pt}{-0.4ex}}]text},%
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries7,markregions={a4-a4},%
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries6,markregions={a3-a3,b4-b4},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries5,markregions={a2-a2,b3-b3,c4-c4},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries4,markregions={a1-a1,b2-b2,c3-c3,d4-d4},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries3,markregions={b1-b1,c2-c2,d3-d3},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries2,markregions={c1-c1,d2-d2},
+                    text=\fontsize{1.2ex}{1.2ex}\bfseries1,markregions={d1-d1}]}
+      \par\medskip
+      \onslide<3->{\#diagonal$_2={}$\par\quad $($\#row${}-{}$\#column$)+\mathtt{n}$}
+    \end{minipage}
+  \par\pause[4]\bigskip
+  \begin{itemize}
+  \item \structure{Note} \ Indexes $1,\dots,(2{*}\mathtt{n}){-}1$ refer to squares on \#diagonal$_{1/2}$
+  \end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A second refinement}{Let's enumerate diagonals}
+  \begin{block}{\alt<4>{\lstinline{queens2.lp}}{\lstinline{queens1.lp}}}%
+    \lstset{basicstyle=\ttfamily\footnotesize,aboveskip=0pt,belowskip=0pt}%
+                                                                                                       \lstinputlisting[linerange={ 1- 9}]{encoding/encodings/queens1.lp}
+    \alt<1  >{\alert<1>{\lstinputlisting[linerange={10-10}]{encoding/encodings/queens1.lp}}}{\alert<2>{\lstinputlisting[linerange={10-10}]{encoding/encodings/queens2.lp}}}
+    \alt<1-2>{          \lstinputlisting[linerange={11-11}]{encoding/encodings/queens1.lp}} {\alert<3>{\lstinputlisting[linerange={11-11}]{encoding/encodings/queens2.lp}}}
+                                                                                                       \lstinputlisting[linerange={12-14}]{encoding/encodings/queens1.lp}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A second refinement}{Let's place \alert{$122$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=122}} \lstinline{queens2.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -216,7 +207,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2>{Time        : 2.211s} (Solving: 0.13s 1st Model: 0.13s Unsat: 0.00s)
 CPU Time    : 0.210s
-Choices     : 11036
+\alert<2>{Choices     : 11036}
 \alert<2>{Conflicts   : 499}
 Restarts    : 3
 
@@ -225,10 +216,9 @@ Restarts    : 3
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A second refinement}{Let's place \alert{$300$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=300}} \lstinline{queens2.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -238,7 +228,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2-3>{Time        : 35.450s} (\alert<3>{Solving: 6.69s} 1st Model: 6.68s Unsat: 0.00s)
 CPU Time    : 7.250s
-Choices     : 141445
+\alert<2>{Choices     : 141445}
 \alert<2>{Conflicts   : 7488}
 Restarts    : 9
 
@@ -247,23 +237,21 @@ Restarts    : 9
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A third refinement}{Let's Precalculate Indexes!}
-\begin{block}{\alt<4>{\lstinline{queens3.lp}}{\lstinline{queens2.lp}}}
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={1-2},showlines=true,belowskip=0pt]{encoding/encodings/queens2.lp}
-\onslide<2->{\alert<2>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={3-3},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens3.lp}}}
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={4-9},showlines=true,belowskip=0pt]{encoding/encodings/queens2.lp}
-\alt<1-2>{\alert<1>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={10-10},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens2.lp}}}{%
-\alert<3>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens3.lp}}}
-\alt<1-2>{\alert<1>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={11-11},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens2.lp}}}{%
-\alert<3>{\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={12-12},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens3.lp}}}
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,linerange={12-14},showlines=true,aboveskip=0pt,belowskip=0pt]{encoding/encodings/queens1.lp}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A third refinement}{Let's precalculate indexes}
+  \begin{block}{\alt<4>{\lstinline{queens3.lp}}{\lstinline{queens2.lp}}}%
+    \lstset{basicstyle=\ttfamily\footnotesize,aboveskip=0pt,belowskip=0pt}%
+                                                                                                       \lstinputlisting[linerange={ 1- 2}]{encoding/encodings/queens2.lp}
+                                                                                \onslide<2->{\alert<2>{\lstinputlisting[linerange={ 3- 3}]{encoding/encodings/queens3.lp}}}
+                                                                                                       \lstinputlisting[linerange={ 4- 9}]{encoding/encodings/queens2.lp}
+    \alt<1-2>{\alert<1>{\lstinputlisting[linerange={10-10}]{encoding/encodings/queens2.lp}}}{\alert<3>{\lstinputlisting[linerange={11-11}]{encoding/encodings/queens3.lp}}}
+    \alt<1-2>{\alert<1>{\lstinputlisting[linerange={11-11}]{encoding/encodings/queens2.lp}}}{\alert<3>{\lstinputlisting[linerange={12-12}]{encoding/encodings/queens3.lp}}}
+                                                                                                       \lstinputlisting[linerange={12-14}]{encoding/encodings/queens1.lp}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A third refinement}{Let's place \alert{$300$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=300}} \lstinline{queens3.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -273,7 +261,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2-3>{Time        : 8.889s} (\alert<3>{Solving: 6.61s} 1st Model: 6.60s Unsat: 0.00s)
 CPU Time    : 7.320s
-Choices     : 141445
+\alert<2>{Choices     : 141445}
 \alert<2>{Conflicts   : 7488}
 Restarts    : 9
 
@@ -282,10 +270,9 @@ Restarts    : 9
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
+% ----------------------------------------------------------------------
 \begin{frame}[fragile]{A third refinement}{Let's place \alert{$600$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=600}} \lstinline{queens3.lp} \lstinline{| clasp --stats}}}
-\vspace*{-3mm}
 \pause\footnotesize%
 \begin{semiverbatim}
 Answer: 1
@@ -295,7 +282,7 @@ SATISFIABLE
 Models      : 1+
 \alert<2>{Time        : 76.798s} (\alert<2>{Solving: 65.81s} 1st Model: 65.75s Unsat: 0.00s)
 CPU Time    : 68.620s
-Choices     : 869379
+\alert<2>{Choices     : 869379}
 \alert<2>{Conflicts   : 25746}
 Restarts    : 12
 
@@ -304,12 +291,10 @@ Restarts    : 12
 \end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
-\begin{frame}[fragile]{A Case for Oracles}{Let's place \alert{$600$} queens}
+% ----------------------------------------------------------------------
+\begin{frame}[fragile]{A case for oracles}{Let's place \alert{$600$} queens}
 \begin{block}{\alert<1>{\lstinline{gringo -c} \alert{\lstinline{n=600}} \lstinline{queens3.lp} \lstinline{| clasp --stats}\\\onslide<2->{\alert{\lstinline{--heuristic=vsids}}} \onslide<4,5->{\alert{\lstinline{--trans-ext=dynamic}}}}}
-\vspace*{-3mm}
 \footnotesize%
-% \alt<1-2>{%
 \begin{semiverbatim}\alt<1-2>{\onslide<1>{
 Answer: 1
 queen(1,477) queen(2,365) queen(3,455) queen(4,470) queen(5,237) \dots{}
@@ -318,7 +303,7 @@ SATISFIABLE
 Models      : 1+
 \alert{Time        : 76.798s} (\alert{Solving: 65.81s} 1st Model: 65.75s Unsat: 0.00s)
 CPU Time    : 68.620s
-Choices     : 869379
+\alert{Choices     : 869379}
 \alert{Conflicts   : 25746}
 Restarts    : 12
 
@@ -331,7 +316,7 @@ SATISFIABLE
 Models      : 1+
 \alert{Time        : 37.454s} (\alert{Solving: 26.38s} 1st Model: 26.26s Unsat: 0.00s)
 CPU Time    : 29.580s
-Choices     : 961315
+\alert{Choices     : 961315}
 \alert{Conflicts   : 3222}
 Restarts    : 7
 
@@ -344,21 +329,17 @@ SATISFIABLE
 Models      : 1+
 \alert{Time        : 22.654s} (\alert{Solving: 10.53s} 1st Model: 10.47s Unsat: 0.00s)
 CPU Time    : 15.750s
-Choices     : 1058729
+\alert{Choices     : 1058729}
 \alert{Conflicts   : 2128}
 Restarts    : 6
 
 \alert{Variables   : 403123}
 \alert{Constraints : 49636}}}}
-\end{semiverbatim}% }}{%
-% \onslide<4->{%
-% \begin{semiverbatim}
-%
-% \end{semiverbatim}}}
+\end{semiverbatim}
 \end{block}
 \end{frame}
-%------------------------------------------------------------
-
+% ----------------------------------------------------------------------
+%
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../main"
