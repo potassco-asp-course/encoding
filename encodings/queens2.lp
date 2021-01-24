@@ -7,8 +7,8 @@
 % TEST
 :- X = 1..n, not 1 { queen(X,Y) } 1.
 :- Y = 1..n, not 1 { queen(X,Y) } 1.
-:- D = 1..2*n-1, 2 { queen(X,Y) : D = (X+Y)-1 }. % Diagonal 1
-:- D = 1..2*n-1, 2 { queen(X,Y) : D = (X-Y)+n }. % Diagonal 2
+:- D = 1..2*n-1, 2 { queen(X,Y) : D = (X+Y)-1 }. % diagonal 1
+:- D = 1..2*n-1, 2 { queen(X,Y) : D = (X-Y)+n }. % diagonal 2
 
 % DISPLAY
 #show queen/2.
