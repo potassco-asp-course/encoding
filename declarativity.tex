@@ -1,26 +1,26 @@
-\begin{frame}[c]{Anything left to worry about?}
+% --------------------------------------------------------------------------------
+\begin{frame}[c]{Declarativity}
+  \bigskip
   \begin{itemize}
   \item ASP offers
-    \begin{itemize}
+    \begin{itemize}\normalsize
     \item rich yet easy modeling languages
     \item efficient instantiation procedures
     \item powerful search engines
     \end{itemize}
+  \item<2->[] but the problem encoding (still) matters
     \bigskip
-  \item<2-> \structure{BUT} The problem encoding (still) matters!
-    \bigskip
-  \item<3-> \structure{Example}
-    \medskip
-    Sort a list with 8 elements
-    \begin{itemize}
-    \item divide-and-conquer % (Quicksort)
-      \hfill\onslide<4>{$\sim\quad 8 (\mathrm{log}_2 8)=\rlap{16}\phantom{20160}$ ``operations''}
-    \item permutation guessing
-      \hfill\onslide<4>{$\sim\quad \rlap{8!/2}\phantom{8 (\mathrm{log}_2 8)} = 20160$ ``operations''}
+  \item<3-> \structure{Declarativity} \
+    \par\smallskip
+    \begin{itemize}\normalsize
+    \item ASP separates problem specifications from solution procedures
+      \smallskip
+    \item Different ASP encodings may result in different performance
     \end{itemize}
   \end{itemize}
 \end{frame}
-
+% --------------------------------------------------------------------------------
+%
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../main"
