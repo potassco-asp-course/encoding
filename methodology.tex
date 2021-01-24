@@ -1,0 +1,383 @@
+%------------------------------------------------------------
+\section{Do's and Dont's}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Implementing Universal Quantification}
+\begin{block}{\textbf{Goal:} identify objects such that ALL properties from a ``list'' hold}
+\begin{enumerate}
+\item<2-> \alt<1-3>{check all properties explicitly}{\sout{check all properties explicitly}}
+%  \begin{itemize}
+%  \item<3->[\KO]
+  \onslide<3->{\hfill \dots{} \alert<3>{obsolete if properties change}}\onslide<10>{\,\textcolor{red}{\KO}}
+%  \end{itemize}
+\item<4-> use variable-sized conjunction (via `\lstinline{:}')
+%  \begin{itemize}
+%  \item<6->[\OK]
+   \onslide<6->{\hfill \dots{} \alert<6>{adapts to changing facts}}\onslide<10>{\,\textcolor{green}{\OK}}
+%  \end{itemize}
+\item<7-> use negation of complement \onslide<9->{\hfill \dots{} \alert<9>{adapts to changing facts}}\onslide<10>{\,\textcolor{green}{\OK}}
+\end{enumerate}
+\end{block}
+\begin{block}{\textbf{Example:} vegetables to buy}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+veg(asparagus).       veg(cucumber).
+pro(asparagus,cheap). pro(cucumber,cheap). \alt<1-4>{}{\alert<5>{pre(cheap).}}
+pro(asparagus,fresh). pro(cucumber,fresh). \alt<1-4>{}{\alert<5>{pre(fresh).}}
+pro(asparagus,tasty). pro(cucumber,tasty). \alt<1-4>{}{\alert<5>{pre(tasty).}}
+\alt<1-2>{}{\alert<3>{pro(asparagus,clean).}}\alt<1-5>{}{                      \alt<6>{\alert<6>{pre(clean).}}{\alt<9->{\alert<9>{pre(clean).}}{}}}
+
+\alt<1>{}{\alt<2-3>{\alert<2>{buy(X) :- veg(X), pro(X,cheap), pro(X,fresh), pro(X,tasty)}\alt<3>{, \alert{pro(X,clean)}}{}\alert<2>{.}}}{\alt<5-6>{\alert<5-6>{buy(X) :- veg(X), pro(X,P) : pre(P).}}{\alt<8->{\alert<8-9>{buy(X) :- veg(X), not bye(X).     bye(X) :- veg(X), pre(P), not pro(X,P).}}{}}}
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Running Example: Latin Square}
+\vspace*{-4mm}
+\begin{minipage}[t]{0.42\linewidth}%
+\begin{block}{\textbf{Given:} an $N{\times}N$ board}
+\vspace*{2mm}
+\begin{tabular}{c@{~}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|}
+\cline{2-7}
+1 & & & & & &
+\\\cline{2-7}
+2 & & & & & &
+\\\cline{2-7}
+3 & & & & & &
+\\\cline{2-7}
+4 & & & & & &
+\\\cline{2-7}
+5 & & & & & &
+\\\cline{2-7}
+6 & & & & & &
+\\\cline{2-7}
+\multicolumn{1}{@{}c@{}}{} & \multicolumn{1}{@{}c@{}}{1} & \multicolumn{1}{@{}c@{}}{2} & \multicolumn{1}{@{}c@{}}{3} & \multicolumn{1}{@{}c@{}}{4} & \multicolumn{1}{@{}c@{}}{5} & \multicolumn{1}{@{}c@{}}{6}
+\vspace*{1mm}
+\end{tabular}
+
+represented by facts:
+\vspace*{-2mm}\footnotesize
+\begin{semiverbatim}
+square(1,1). \dots\ square(1,6).
+square(2,1). \dots\ square(2,6).
+square(3,1). \dots\ square(3,6).
+square(4,1). \dots\ square(4,6).
+square(5,1). \dots\ square(5,6).
+square(6,1). \dots\ square(6,6).
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\end{minipage}%
+\hfill\pause%
+\begin{minipage}[t]{0.52\linewidth}%
+\begin{block}{\textbf{Wanted:} assignment of $1,\dots,N$}
+\vspace*{2mm}
+\begin{tabular}{c@{~}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|@{}p{5mm}@{}|}
+\cline{2-7}
+1 & ~$1$ & ~$2$ & ~$3$ & ~$4$ & ~$5$ & ~$6$
+\\\cline{2-7}
+2 & ~$2$ & ~$3$ & ~$4$ & ~$5$ & ~$6$ & ~$1$
+\\\cline{2-7}
+3 & ~$3$ & ~$4$ & ~$5$ & ~$6$ & ~$1$ & ~$2$
+\\\cline{2-7}
+4 & ~$4$ & ~$5$ & ~$6$ & ~$1$ & ~$2$ & ~$3$
+\\\cline{2-7}
+5 & ~$5$ & ~$6$ & ~$1$ & ~$2$ & ~$3$ & ~$4$
+\\\cline{2-7}
+6 & ~$6$ & ~$1$ & ~$2$ & ~$3$ & ~$4$ & ~$5$
+\\\cline{2-7}
+\multicolumn{1}{@{}c@{}}{} & \multicolumn{1}{@{}c@{}}{1} & \multicolumn{1}{@{}c@{}}{2} & \multicolumn{1}{@{}c@{}}{3} & \multicolumn{1}{@{}c@{}}{4} & \multicolumn{1}{@{}c@{}}{5} & \multicolumn{1}{@{}c@{}}{6}
+\vspace*{1mm}
+\end{tabular}
+
+represented by atoms:
+\vspace*{-2mm}\footnotesize
+\begin{semiverbatim}
+num(1,1,1) num(1,2,2) \dots\ num(1,6,6)
+num(2,1,2) num(2,2,3) \dots\ num(2,6,1)
+num(3,1,3) num(3,2,4) \dots\ num(3,6,2)
+num(4,1,4) num(4,2,5) \dots\ num(4,6,3)
+num(5,1,5) num(5,2,6) \dots\ num(5,6,4)
+num(6,1,6) num(6,2,1) \dots\ num(6,6.5)
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\end{minipage}%
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Projecting Irrelevant Details Out}
+\begin{block}{A Latin square encoding}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+% DOMAIN
+#const n=32. square(1..n,1..n).
+\alt<1-3>{}{\alert<4>{squareX(X) :- square(X,Y).      squareY(Y) :- square(X,Y).}}
+
+% GENERATE
+1 \{ num(X,Y,N) : N = 1..n \} 1 :- square(X,Y).
+
+% TEST
+:- \alt<1-3>{square(X,\alert<2>{Y})}{\alert<4>{squareX(X)}}, N = 1..n, not num(X,Y',N) : square(X,Y').
+:- \alt<1-3>{square(\alert<2>{X},Y)}{\alert<4>{squareY(Y)}}, N = 1..n, not num(X',Y,N) : square(X',Y).
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\vspace*{-2mm}
+\begin{itemize}
+\item<2-3>\structure{Note} \alert<2>{unreused ``singleton variables''}
+\end{itemize}
+%\begin{block}<3-5>
+\vspace*{-4mm}
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<3-5>{\lstinline{gringo} \attach{Examples/latin_0.lp}{\lstinline{latin_0.lp}} \lstinline{| wc}}
+\lstinline{105480} \alert<5>{\lstinline{2558984}} \lstinline{14005258}
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<5->{\lstinline{gringo} \attach{Examples/latin_1.lp}{\lstinline{latin_1.lp}} \lstinline{| wc}}
+\lstinline{42056} \alert<5>{\lstinline{273672}} \lstinline{1690522}
+\end{block}
+\end{minipage}
+% }}{} }
+% \alt<1-4>{\onslide<3>{}~\lstinline{2558984}~\lstinline{13972426}}}}{\alert<5>{\lstinline{42056\ }~\lstinline{273672\ }~\lstinline{1688522}}}
+%\end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Unraveling Symmetric Inequalities}
+\begin{block}{Another Latin square encoding}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+% DOMAIN
+#const n=32. square(1..n,1..n).
+
+% GENERATE
+1 \{ num(X,Y,N) : N = 1..n \} 1 :- square(X,Y).
+
+% TEST
+:- num(X,\alert<2>{Y},N), num(X,\alert<2>{Y'},N), \alt<1-3>{\alert<2>{Y != Y'}}{\alert<4>{Y <  Y'}}.
+:- num(\alert<2>{X},Y,N), num(\alert<2>{X'},Y,N), \alt<1-3>{\alert<2>{X != X'}}{\alert<4>{X <  X'}}.
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\begin{itemize}
+\item<2-3>\structure{Note} \alert<2>{duplicate ground rules
+\\\small (swapping \lstinline{Y}/\lstinline{Y'} and \lstinline{X}/\lstinline{X'}
+ gives the ``same'')}
+\end{itemize}
+\vspace*{-4mm}
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<3-5>{\lstinline{gringo} \attach{Examples/latin_2.lp}{\lstinline{latin_2.lp}} \lstinline{| wc}}
+\lstinline{2071560} \alert<5>{\lstinline{12389384}} \lstinline{40906946}
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<5->{\lstinline{gringo} \attach{Examples/latin_3.lp}{\lstinline{latin_3.lp}} \lstinline{| wc}}
+\lstinline{1055752} \alert<5>{\lstinline{6294536}} \lstinline{21099558}
+\end{block}
+\end{minipage}
+% \begin{block}<3-5>{\lstinline{gringo} \alt<1-4>{\onslide<3>{\attach{Examples/latin_2.lp}{\lstinline{latin_2.lp}}}}{\attach{Examples/latin_3.lp}{\lstinline{latin_3.lp}}} \lstinline{| wc}}
+% \alt<1-4>{\onslide<3>{\alert<3>{\lstinline{2071624}~\lstinline{12389640}~\lstinline{40915090}}}}{\alert<5>{\lstinline{1055816}~\lstinline{6294792\ }~\lstinline{21104106}}}
+% \end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Linearizing Existence Tests}
+\begin{block}{Still another Latin square encoding}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+% DOMAIN
+#const n=32. square(1..n,1..n).
+
+% GENERATE
+1 \{ num(X,Y,N) : N = 1..n \} 1 :- square(X,Y).
+
+% \alt<1-3>{TEST}{DEFINE \onslide<5->{+ TEST}}
+\alt<4->{\alert<4>{gtX(X-1,Y,N) :- num(X,Y,N), 1 < X.     gtY(X,Y-1,N) :- num(X,Y,N), 1 < Y.}
+\alert<4>{gtX(X-1,Y,N) :- gtX(X,Y,N), 1 < X.     gtY(X,Y-1,N) :- gtY(X,Y,N), 1 < Y.}
+\onslide<5->{\alert<5>{ :- num(X,Y,N), gtX(X,Y,N).             :- num(X,Y,N), gtY(X,Y,N).}}}{:- num(X,\alert<2>{Y},N), num(X,\alert<2>{Y'},N), \alert<2>{Y < Y'}.
+:- num(\alert<2>{X},Y,N), num(\alert<2>{X'},Y,N), \alert<2>{X < X'}.
+}
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\begin{itemize}
+\item<2-3>\structure{Note} \alert<2>{uniqueness of \lstinline{N} in a row/column checked by enumerating pairs!}
+\end{itemize}
+\vspace*{-4mm}
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<3-6>{\lstinline{gringo} \attach{Examples/latin_3.lp}{\lstinline{latin_3.lp}} \lstinline{| wc}}
+\lstinline{1055752} \alert<6>{\lstinline{6294536}} \lstinline{21099558}
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<6->{\lstinline{gringo} \attach{Examples/latin_4.lp}{\lstinline{latin_4.lp}} \lstinline{| wc}}
+\lstinline{228360} \alert<6>{\lstinline{1205256}} \lstinline{4780744}
+\end{block}
+\end{minipage}
+% \begin{block}<3-6>{\lstinline{gringo} \alt<1-5>{\onslide<3>{\attach{Examples/latin_3.lp}{\lstinline{latin_3.lp}}}}{\attach{Examples/latin_4.lp}{\lstinline{latin_4.lp}}} \lstinline{| wc}}
+% \alt<1-5>{\onslide<3>{\alert<3>{\lstinline{1055816}~\lstinline{6294792}~\lstinline{21104106}}}}{\alert<6>{\lstinline{228424\ }~\lstinline{1205512}~\lstinline{4782138}}}
+% \end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Assigning Aggregate Values}
+\begin{block}{Yet another Latin square encoding}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+\alert<2-3>{% DOMAIN}
+#const n=32. square(1..n,1..n).\only<1-6>{
+\alert<2>{sigma(S) :- \alert<3>{S = #sum \{ X:square(X,n) \}}.}\alt<3>{\hfill\textcolor{green}{\OK}}{}}
+
+% GENERATE
+1 \{ num(X,Y,N) : N = 1..n \} 1 :- square(X,Y).
+
+\alt<1-8>{\alert<4-6>{% DEFINE + TEST}
+\alert<4>{occX(X,N,C) :- X = 1..n, N = 1..n, \alt<5>{\alert{C \{ num(X,Y,N) \} C, C = 0..n}.}{\alert<6>{C = \{ num(X,Y,N) \}}.}\alt<6>{\hfill\KO}{}}
+\alert<4>{occY(Y,N,C) :- Y = 1..n, N = 1..n, \alt<5>{\alert{C \{ num(X,Y,N) \} C, C = 0..n}.}{\alert<6>{C = \{ num(X,Y,N) \}}.}\alt<6>{\hfill\KO}{}}
+\alert<4>{:- occX(X,N,C), C != 1.  :- occY(Y,N,C), C != 1.}}{\alert<9>{% TEST
+:- X = 1..n, N = 1..n, not 1 \{ num(X,Y,N) \} 1.
+:- Y = 1..n, N = 1..n, not 1 \{ num(X,Y,N) \} 1.
+}}
+
+% DISPLAY
+#show num/3. \only<1-6>{\alert<2>{#show sigma/1.}}
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\alt<5>{%
+\begin{itemize}
+\item\structure{Note} \alert{internal transformation by \lstinline{gringo}}
+\end{itemize}\vspace*{1mm}}{%
+\vspace*{-7mm}
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<7->{\lstinline{gringo} \attach{Examples/latin_5.lp}{\lstinline{latin_5.lp}} \lstinline{| wc}}
+\alt<7>{}{\lstinline{304136} \alert<10>{\lstinline{5778440}} \lstinline{30252505}}
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}%
+\begin{block}<9->{\lstinline{gringo} \attach{Examples/latin_6.lp}{\lstinline{latin_6.lp}} \lstinline{| wc}}
+\alt<9>{}{\lstinline{48136} \alert<10>{\lstinline{373768}} \lstinline{2185042}}
+\end{block}
+\end{minipage}}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Breaking Symmetries}
+\begin{block}{The ultimate Latin square encoding?}
+\vspace*{-4mm}\footnotesize
+\begin{semiverbatim}
+% DOMAIN
+#const n=32. square(1..n,1..n).
+
+% GENERATE
+1 \{ num(X,Y,N) : N = 1..n \} 1 :- square(X,Y).
+
+% TEST
+:- X = 1..n, N = 1..n, not 1 \{ num(X,Y,N) \} 1.
+:- Y = 1..n, N = 1..n, not 1 \{ num(X,Y,N) \} 1.
+\alt<1-3,6-7>{}{\alert<4,8>{:- square(1,Y), not num(1,Y,Y). % Symmetry Breaking}}
+
+% DISPLAY
+#show num/3.
+\end{semiverbatim}
+\vspace*{-2mm}
+\end{block}
+\alt<6->{\vspace*{-5mm}%
+\begin{block}{\alert<6,8>{\lstinline{gringo -c}} \alert{\lstinline{n=5}} \alt<8-9>{\attach{Examples/latin_7.lp}{\lstinline{latin_7.lp}}}{\attach{Examples/latin_6.lp}{\lstinline{latin_6.lp}}} \alert<6,8>{\lstinline{| clasp -q 0}}}
+\alt<7-8>{\onslide<7>{%
+\alert{\lstinline{Models      : 161280}}\qquad
+\alert{\lstinline{Time        : 2.078s}}}}{\alt<6>{
+\lstinline{\ }}{%
+\alert{\lstinline{Models      : 1344\ }}\qquad
+\alert{\lstinline{\ Time        : 0.024s}}}}
+\end{block}\vspace*{-1mm}}{\alt<1>{}{%
+\begin{itemize}
+\item\structure{Note} \alt<5>{Let's compare \alert{enumeration} speed!}{\alt<2>{\alert{many symmetric solutions}
+\\\small (mirroring, rotation, value permutation)}{\alert<3>{easy and safe to fix a full row/column!}}}
+\end{itemize}}}
+\end{frame}
+%------------------------------------------------------------
+\section{Hints}
+%------------------------------------------------------------
+\begin{frame}{Encode With Care!}
+  \begin{enumerate}
+  \item Create a \alert<1>{working} encoding
+    \begin{itemize}
+    \item<2->[Q1:] Do you need to modify the encoding if the facts change?
+    \item<2->[Q2:] Are all variables significant (or statically functionally dependent)?
+    \item<2->[Q3:] Can there be (many) identic ground rules?
+    \item<2->[Q4:] Do you enumerate pairs of values (to test uniqueness)?
+    \item<2->[Q5:] Do you assign dynamic aggregate values (to check a fixed bound)?
+    \item<2->[Q6:] Do you admit (obvious) symmetric solutions?
+    \item<3->[Q7:] Do you have additional domain knowledge simplifying the problem?
+    \item<4->[Q8:] Are you aware of anything else that, if encoded,
+                   would reduce grounding and/or solving efforts?
+    \end{itemize}
+  \item<1-> \alert<5>{Revise until no ``Yes'' answer!}
+    \begin{itemize}
+    \item<6->\structure{Note} \alert<6>{If the format of facts makes encoding painful
+                        (for instance,
+                        abusing grounding for ``scientific calculations''),
+                        revise the fact format as well.}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Some Hints on (Preventing) Debugging}
+\begin{block}{Kinds of errors}
+\vspace*{-2mm}
+  \begin{itemize}
+  \item \alert<2>{syntactic} \hfill\onslide<2->{\dots{} follow error messages by the grounder}
+  \item \alert<3->{semantic} \hfill\onslide<3->{\dots{} (most likely) encoding/intention mismatch}
+  \end{itemize}
+\vspace*{-2mm}
+\end{block}
+\begin{block}<4->{Ways to identify semantic errors (early)}
+  \begin{enumerate}
+  \item<4-> \alert{develop and test incrementally}
+    \begin{itemize}
+    \item prepare toy instances with ``interesting features''
+    \item build the encoding bottom-up and verify additions (eg.\ new predicates)
+    \end{itemize}
+  \item<5-> \alert{compare the encoded to the intended meaning}
+    \begin{itemize}
+    \item check whether the grounding fits (use \alert{\lstinline{gringo --text}})
+    \item if stable models are unintended, investigate conditions that fail to hold
+    \item if stable models are missing, examine integrity constraints (add heads)
+    \end{itemize}
+  \item<6-> ask tools (eg.\ {\footnotesize\url{http://www.kr.tuwien.ac.at/research/projects/mmdasp/}})
+  \end{enumerate}
+\end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Overcoming Performance Bottlenecks}
+\begin{block}{Grounding}
+\vspace*{-2mm}
+\begin{itemize}
+\item monitor \alert{time} spent by and output \alert{size} of \lstinline{gringo}
+  \begin{enumerate}
+  \item system tools   \ (eg.\ \lstinline{time(gringo [}\dots{}\lstinline{] | wc)})
+  \item grounding info \ (eg.\ \lstinline{gringo --text})
+  \end{enumerate}
+  \item<2->\structure{Note} once identified, \alert{reformulate} ``critical'' logic program parts
+\end{itemize}
+\end{block}
+\begin{block}<3->{Solving}
+\vspace*{-2mm}
+\begin{itemize}
+\item check solving statistics (use \alert{\lstinline{clasp --stats}})
+\item<4->\structure{Note} if great search efforts (\alert{\lstinline{Conflicts}}/\lstinline{Choices}/\lstinline{Restarts}), then
+  \begin{enumerate}
+  \item<5-> try prefabricated settings (using \lstinline{clasp} option `\lstinline{--configuration}')
+  \item<5-> try auto-configuration (offered by \lstinline{claspfolio} or \lstinline{accclingo})
+  \item<5-> try manual fine-tuning (requires expert knowledge!)
+  \item<6-> if possible, reformulate the problem or add domain knowledge
+            (``redundant'' constraints) to help the solver
+  \end{enumerate}
+\end{itemize}
+\end{block}
+\end{frame}
+%------------------------------------------------------------
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-master: "../asp"
+%%% End:
