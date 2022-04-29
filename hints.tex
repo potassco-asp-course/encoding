@@ -1,0 +1,84 @@
+%------------------------------------------------------------
+\begin{frame}{Encode with care!}
+  \begin{enumerate}
+  \item Create a \alert<1>{working} encoding
+    \begin{itemize}
+    \item<2->\structure{Q1} Do you need to modify the encoding if the facts change?
+    \item<2->\structure{Q2} Are all variables significant (or statically functionally dependent)?
+    \item<2->\structure{Q3} Can there be (many) identic ground rules?
+    \item<2->\structure{Q4} Do you enumerate pairs of values (to test uniqueness)?
+    \item<2->\structure{Q5} Do you assign dynamic aggregate values (to check a fixed bound)?
+    \item<2->\structure{Q6} Do you admit (obvious) symmetric solutions?
+    \item<3->\structure{Q7} Do you have additional domain knowledge simplifying the problem?
+    \item<4->\structure{Q8} Are you aware of anything else that, if encoded, would reduce grounding and/or solving efforts?
+    \end{itemize}
+  \item<1-> \alert<5>{Revise until no ``Yes'' answer!}
+    \begin{itemize}
+    \item<6->\structure{Note} \alert<6>{If the format of facts makes encoding painful
+                        (for instance,
+                        abusing grounding for ``scientific calculations''),
+                        revise the fact format as well.}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Some hints on (preventing) debugging}
+\begin{block}{Kinds of errors}
+\vspace*{-2mm}
+  \begin{itemize}
+  \item \alert<2>{syntactic} \hfill\onslide<2->{\dots{} follow error messages by the grounder}
+  \item \alert<3->{semantic} \hfill\onslide<3->{\dots{} (most likely) encoding/intention mismatch}
+  \end{itemize}
+\vspace*{-2mm}
+\end{block}
+\begin{block}<4->{Ways to identify semantic errors (early)}
+  \begin{enumerate}
+  \item<4-> \alert{develop and test incrementally}
+    \begin{itemize}
+    \item prepare toy instances with ``interesting features''
+    \item build the encoding bottom-up and verify additions (eg.\ new predicates)
+    \end{itemize}
+  \item<5-> \alert{compare the encoded to the intended meaning}
+    \begin{itemize}
+    \item check whether the grounding fits (use \alert{\lstinline{gringo --text}})
+    \item if stable models are unintended, investigate conditions that fail to hold
+    \item if stable models are missing, examine integrity constraints (add heads)
+    \end{itemize}
+  \item<6-> ask tools (eg.\ {\footnotesize\url{http://www.kr.tuwien.ac.at/research/projects/mmdasp/}})
+  \end{enumerate}
+\end{block}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Overcoming Performance Bottlenecks}
+\begin{block}{Grounding}
+\vspace*{-2mm}
+\begin{itemize}
+\item monitor \alert{time} spent by and output \alert{size} of \lstinline{gringo}
+  \begin{enumerate}
+  \item system tools   \ (eg.\ \lstinline{time(gringo [}\dots{}\lstinline{] | wc)})
+  \item grounding info \ (eg.\ \lstinline{gringo --text})
+  \end{enumerate}
+  \item<2->\structure{Note} once identified, \alert{reformulate} ``critical'' logic program parts
+\end{itemize}
+\end{block}
+\begin{block}<3->{Solving}
+\vspace*{-2mm}
+\begin{itemize}
+\item check solving statistics (use \alert{\lstinline{clasp --stats}})
+\item<4->\structure{Note} if great search efforts (\alert{\lstinline{Conflicts}}/\lstinline{Choices}/\lstinline{Restarts}), then
+  \begin{enumerate}
+  \item<5-> try prefabricated settings (using \lstinline{clasp} option `\lstinline{--configuration}')
+  \item<5-> try auto-configuration (offered by \lstinline{claspfolio} or \lstinline{accclingo})
+  \item<5-> try manual fine-tuning (requires expert knowledge!)
+  \item<6-> if possible, reformulate the problem or add domain knowledge
+            (``redundant'' constraints) to help the solver
+  \end{enumerate}
+\end{itemize}
+\end{block}
+\end{frame}
+%------------------------------------------------------------
+%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../main"
+%%% End:
